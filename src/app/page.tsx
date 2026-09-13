@@ -1,7 +1,9 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { StatsStrip } from "@/components/landing/StatsStrip";
-import { ToolSwitcher } from "@/components/landing/ToolSwitcher";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { ToolOrbitSection } from "@/components/landing/ToolOrbitSection";
+import { DashboardPreview } from "@/components/landing/DashboardPreview";
 import { PointOfView } from "@/components/landing/PointOfView";
 import { Pricing } from "@/components/landing/Pricing";
 import { ClosingCTA } from "@/components/landing/ClosingCTA";
@@ -13,7 +15,9 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <StatsStrip />
-      <ToolSwitcher />
+      <HowItWorks />
+      <ToolOrbitSection />
+      <DashboardPreview />
       <PointOfView />
       <Pricing />
       <ClosingCTA />

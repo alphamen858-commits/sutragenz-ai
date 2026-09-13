@@ -127,6 +127,30 @@ silently — the other 11 tools are unaffected.
 Rate limiting (Upstash Redis) also has a free tier if you want it — see
 below — but the app works fine without it for personal use.
 
+## The landing page's 3D core
+
+The hero and "Every tool, connected to one core" section render a real,
+interactive Three.js scene (`src/components/landing/three/`) — a rotating
+icosahedron core with a wireframe shell and particle field, responding to
+pointer movement. It's isolated deliberately:
+
+- `AICoreScene.tsx` is the actual Three.js/React Three Fiber scene
+- `AICore.tsx` wraps it with three safety nets: it's lazy-loaded (`next/dynamic`,
+  `ssr: false`) so it doesn't block initial page load; it checks
+  `prefers-reduced-motion` and falls back to a static glowing circle if the
+  visitor has that setting on; it checks for WebGL support and falls back
+  the same way on devices/browsers without it
+- Every card, headline, and button around the 3D core is normal HTML/CSS —
+  only the core itself is WebGL. This keeps the whole page accessible,
+  readable, and far less likely to break than an all-3D UI
+
+**If you added this after already running `npm install` once**, you need
+to run it again — this added new packages:
+```
+npm install
+```
+Skipping this will show an error like `Module not found: Can't resolve 'three'`.
+
 ## Local setup
 
 ```bash

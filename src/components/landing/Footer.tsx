@@ -8,7 +8,7 @@ export function Footer() {
         <p className="text-xs tracking-[0.15em] text-white/35">SEE · THINK · CREATE</p>
         <div className="flex gap-6 text-sm text-white/50">
           <a href="#tools" className="hover:text-white">Tools</a>
-          <a href="#constellation" className="hover:text-white">Constellation</a>
+          <a href="#how-it-works" className="hover:text-white">How it works</a>
           <a href="/sign-up" className="hover:text-white">Start here</a>
         </div>
       </div>

@@ -4,7 +4,7 @@
 // README) still answers every feature, not just the ones mapped to it.
 import OpenAI from "openai";
 import Anthropic from "@anthropic-ai/sdk";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 export type AIProvider = "openai" | "anthropic" | "gemini";
 
@@ -22,7 +22,7 @@ const anthropic = process.env.ANTHROPIC_API_KEY
   : null;
 
 const gemini = process.env.GOOGLE_GEMINI_API_KEY
-  ? new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY)
+  ? new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY })
   : null;
 
 // Default provider per feature — tune based on cost/quality tradeoffs once
@@ -55,18 +55,19 @@ async function callProvider(provider: AIProvider, system: string, messages: Chat
 
   if (provider === "gemini") {
     if (!gemini) throw new Error("Gemini isn't configured.");
-    // Flash is the model the free tier actually grants — Pro models are
-    // paid-only as of 2026. Swap this if you're on a paid Gemini tier.
-    const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
-    const chat = model.startChat({
-      history: messages.slice(0, -1).map((m) => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }],
-      })),
+    // Gemini 2.5 Flash — the model currently granted on the free tier.
+    // Uses the current @google/genai SDK (the old @google/generative-ai
+    // package was deprecated by Google and its models are being retired).
+    const contents = messages.map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
+    const res = await gemini.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents,
+      config: { systemInstruction: system },
     });
-    const last = messages[messages.length - 1];
-    const res = await chat.sendMessage(`${system}\n\n${last.content}`);
-    return res.response.text();
+    return res.text ?? "";
   }
 
   if (provider === "openai") {
@@ -98,6 +99,7 @@ export async function runChat(opts: {
     try {
       return await callProvider(p, system, messages);
     } catch (err) {
+      console.error(`AI PROVIDER FAILED [${p}]:`, err instanceof Error ? err.message : err);
       lastError = err;
     }
   }
@@ -116,4 +118,6 @@ export const FEATURE_SYSTEM_PROMPTS: Record<string, string> = {
     "You are the Sutragenz Research Assistant. Produce structured, well-cited summaries. Distinguish established facts from open questions.",
   "career-coach":
     "You are the Sutragenz Career Coach. Give concrete, actionable roadmaps and skill recommendations tailored to the student's stated goals.",
+  "prompt-gen":
+    "You are the Sutragenz Prompt Generator. Take a rough description of what someone wants an AI to do and rewrite it as a sharper, more specific prompt — clear task, relevant context, output format, and constraints. Return the improved prompt first, then a one-line note on what you changed and why.",
 };

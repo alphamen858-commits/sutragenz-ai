@@ -56,6 +56,14 @@ body {
   color: transparent;
 }
 
+@keyframes dash {
+  to { stroke-dashoffset: -18; }
+}
+
+.perspective-container {
+  perspective: 1400px;
+}
+
 .card-surface {
   background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
   border: 1px solid rgba(255,255,255,0.08);

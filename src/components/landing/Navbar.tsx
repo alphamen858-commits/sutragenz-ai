@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/Button";
 
 const links = [
   { href: "#tools", label: "Tools" },
-  { href: "#constellation", label: "Constellation" },
-  { href: "#why", label: "Why Sutragenz" },
-  { href: "/sign-up", label: "Start here" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#dashboard", label: "Dashboard" },
+  { href: "#pricing", label: "Pricing" },
 ];
 
 export function Navbar() {
