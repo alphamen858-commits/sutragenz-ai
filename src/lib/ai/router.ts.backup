@@ -29,7 +29,7 @@ const gemini = process.env.GOOGLE_GEMINI_API_KEY
 // you have paid keys. With only a free Gemini key, this mapping is
 // irrelevant anyway — runChat's fallback chain routes everything to Gemini.
 export const FEATURE_PROVIDER: Record<string, AIProvider> = {
-  tutor: "gemini",
+  tutor: "anthropic",
   "coding-assistant": "anthropic",
   research: "openai",
   "career-coach": "openai",
@@ -121,10 +121,3 @@ export const FEATURE_SYSTEM_PROMPTS: Record<string, string> = {
   "prompt-gen":
     "You are the Sutragenz Prompt Generator. Take a rough description of what someone wants an AI to do and rewrite it as a sharper, more specific prompt — clear task, relevant context, output format, and constraints. Return the improved prompt first, then a one-line note on what you changed and why.",
 };
-
-
-
-
-
-
-
